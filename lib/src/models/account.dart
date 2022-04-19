@@ -76,14 +76,19 @@ class GWAccount {
       );
 
   /// Retrieves an account from MailGw API
-  static Future<GWAccount> _fromApi(
-    String address,
-    String password, [
-    String? token,
-  ]) async {
-    token ??= await getToken(address, password);
-    var data = await Requests.get('/me', {'Authorization': 'Bearer $token'});
-    return GWAccount._fromJson(data, password);
+  static Future<GWAccount> _fromApi(String address, String password) async {
+    String token = await getToken(address, password);
+
+    var data = await Requests.get<Map>(
+      '/me',
+      {'Authorization': 'Bearer $token'},
+    ) as Map<String, dynamic>;
+
+    GWAccount account = GWAccount._fromJson(data, password);
+
+    auths[data['id']] = Auth(account, token);
+
+    return account;
   }
 
   /// Deletes the account
@@ -119,11 +124,11 @@ class GWAccount {
     );
 
     GWAccount account = GWAccount._fromJson(data, password);
-    this.quota = account.quota;
-    this.used = account.used;
-    this.isDisabled = account.isDisabled;
-    this.isDeleted = account.isDeleted;
-    this.updatedAt = account.updatedAt;
+    quota = account.quota;
+    used = account.used;
+    isDisabled = account.isDisabled;
+    isDeleted = account.isDeleted;
+    updatedAt = account.updatedAt;
     auths[id] = Auth(account, auths[id]!.token);
     return account;
   }
@@ -142,6 +147,11 @@ class GWAccount {
           if (!canYield) return;
           var encodedData = jsonDecode(event.data);
           if (encodedData['@type'] == 'Account') {
+            quota = encodedData['quota'];
+            used = encodedData['used'];
+            isDisabled = encodedData['isDisabled'];
+            isDeleted = encodedData['isDeleted'];
+            updatedAt = DateTime.parse(encodedData['updatedAt']);
             return;
           }
           Map<String, dynamic> data = await Requests.get<Map>(

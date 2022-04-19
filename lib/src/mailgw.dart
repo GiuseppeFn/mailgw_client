@@ -101,6 +101,9 @@ class MailGw {
     }
   }
 
+  static List<GWAccount> get accounts =>
+      auths.values.map((e) => e.account).toList();
+
   /// Gets the auths Map.
   static Map<String, Map<String, dynamic>> get getAuths {
     return auths.map((key, value) => MapEntry(key, value.toJson()));
