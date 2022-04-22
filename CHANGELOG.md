@@ -1,8 +1,12 @@
 # Changelog
 
+## 2.1.0
+
+ - Added some features 
+
 ## 2.0.1
 
--  Added `MailTm.accounts`.
+ - Added `MailTm.accounts`.
 
 ## 2.0.0
 
