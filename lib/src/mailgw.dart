@@ -101,7 +101,7 @@ class MailGw {
     }
   }
 
-  static List<TMAccount> get accounts =>
+  static List<GWAccount> get accounts =>
       auths.values.map((auth) => auth.account).toList();
 
   /// Gets the auths Map.

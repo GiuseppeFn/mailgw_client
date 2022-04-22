@@ -75,7 +75,7 @@ class Requests {
     Map<String, String>? headers,
     Map<String, String>? data,
     ResponseType? responseType,
-	bool json = true,
+    bool json = true,
   }) async {
     headers ??= {};
     headers['Accept'] = json ? 'application/json' : 'application/ld+json';

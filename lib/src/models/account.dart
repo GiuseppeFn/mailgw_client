@@ -226,7 +226,7 @@ class GWAccount {
         'updatedAt': updatedAt.toIso8601String(),
       };
   Map<String, String> get auth => auths[id]!.headers;
-	
+
   @override
   operator ==(Object other) =>
       identical(this, other) || other is GWAccount && id == other.id;
