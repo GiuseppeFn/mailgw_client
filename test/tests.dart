@@ -5,7 +5,7 @@ void main() async {
   tearDown(() async => await Future.delayed(Duration(seconds: 1)));
   late GWAccount account;
 
-  test('Domains', () => expect(Domain.domains, completes));
+  test('Domains', () => expect(GWDomain.domains, completes));
 
   group('MailGw tests -', () {
     test('Register', () async => account = await MailGw.register());

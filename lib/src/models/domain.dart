@@ -1,8 +1,8 @@
 import '../requests.dart';
 
 /// MailGw domains.
-class Domain {
-  /// Domain's id
+class GWDomain {
+  /// GWDomain's id
   final String id;
 
   /// Domain as string (example: @mailgw.com)
@@ -17,7 +17,7 @@ class Domain {
   /// When the domain was updated
   final DateTime updatedAt;
 
-  const Domain({
+  const GWDomain({
     required this.id,
     required this.domain,
     required this.isActive,
@@ -25,7 +25,7 @@ class Domain {
     required this.updatedAt,
   });
 
-  factory Domain._fromJson(Map<String, dynamic> json) => Domain(
+  factory GWDomain._fromJson(Map<String, dynamic> json) => GWDomain(
         id: json['id'],
         domain: json['domain'],
         isActive: json['isActive'],
@@ -42,12 +42,26 @@ class Domain {
         'updatedAt': updatedAt.toIso8601String(),
       };
 
+  static Future<List<GWDomain>> _getDomains(int page, [Map? response]) async {
+    response ??= await Requests.get<Map>('/domains?page=page', {}, false);
+    final List<GWDomain> result = [];
+    for (int i = 0; i < response["hydra:member"].length; i++) {
+      result.add(GWDomain._fromJson(response["hydra:member"][i]));
+    }
+    return result;
+  }
+
   /// Returns all the domains
-  static Future<List<Domain>> get domains async {
-    final response = await Requests.get<List>('/domains');
-    List<Domain> result = [];
-    for (final item in response) {
-      result.add(Domain._fromJson(item));
+  static Future<List<GWDomain>> get domains async {
+    var response = await Requests.get<Map>('/domains?page=1', {}, false);
+    int iterations = ((response["hydra:totalItems"] / 30) as double).ceil();
+    if (iterations == 1) {
+      return _getDomains(-1, response);
+    }
+
+    final List<GWDomain> result = [];
+    for (int page = 2; page <= iterations; ++page) {
+      result.addAll(await _getDomains(page));
     }
     return result;
   }

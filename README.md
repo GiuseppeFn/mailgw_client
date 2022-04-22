@@ -18,7 +18,7 @@ A static class which is mainly needed for storing, creating and loading accounts
 #### Create an account
 
 
-[Go to Account section](#account)
+[Go to Account section](#gwaccount)
 
 
 To create an account you just need to use the MailGw.register method.
@@ -30,7 +30,7 @@ Params
 - username: address' username (abcdqwerty@mail.gw, here, abcdqwerty is the username)
 - password: account's password
 
-- domain: address' domain, (like @mail.gw, must be [Domain](#domain) class), if not provided, a random one will be provided.
+- domain: address' domain, (like @mail.gw, must be [Domain](#gwdomain) class), if not provided, a random one will be provided.
 
 ``await MailGw.register(password: 'ah yes password');``
 
@@ -38,7 +38,7 @@ Returns the ``Future<GWAccount>`` instance (Must be awaited as above!)
 
 #### Loading an account
 
-[Go to Account section](#account)
+[Go to Account section](#gwaccount)
 
 You can load an account by using the MailGw.login method
 
@@ -50,7 +50,7 @@ If nothing is provided/the provided parameters are not valid and elseNew is true
 
 If nothing is provided and elseNew is false, throws MailError with code -1 (Invalid arguments)
 
-### Account
+### GWAccount
 
 ##### Class members:
 
@@ -65,7 +65,7 @@ If nothing is provided and elseNew is false, throws MailError with code -1 (Inva
 
 #### Get Account's messages
 
-[Go to Message section](#message)
+[Go to Message section](#gwmessage)
 
 You can use 
 
@@ -97,7 +97,7 @@ Only access members!
 
 #### Listen to messages
 
-[Go to Message section](#message)
+[Go to Message section](#gwmessage)
 
 You can do so by using
 
@@ -105,7 +105,7 @@ You can do so by using
 
 account.messages returns a stream of ``Messages``
 
-### Message
+### GWMessage
 
 ##### Class members
 
@@ -145,7 +145,7 @@ account.messages returns a stream of ``Messages``
 
   - ``bool`` hasAttachments: Whether the message has attachments.
 
-  - ``List<Attachment>`` attachments: List of the message.
+  - ``List<GWAttachment>`` attachments: List of the message.
 
   - ``int`` size: The size of the message.
 
@@ -181,7 +181,7 @@ You can do so by:
 Returns ``Future<bool>`` (Must be awaited as above!)
 
 
-### Domain
+### GWDomain
 
 #### Class members
 

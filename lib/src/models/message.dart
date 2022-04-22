@@ -3,10 +3,11 @@ import 'message_source.dart';
 import '../requests.dart';
 import '../mailgw.dart';
 
-Message messageFromJson(Map<String, dynamic> json) => Message._fromMap(json);
+GWMessage messageFromJson(Map<String, dynamic> json) =>
+    GWMessage._fromMap(json);
 
-class Message {
-  Message._({
+class GWMessage {
+  GWMessage._({
     required this.id,
     required this.accountId,
     required this.msgid,
@@ -88,7 +89,7 @@ class Message {
   final bool hasAttachments;
 
   /// List of the message.
-  final List<Attachment> attachments;
+  final List<GWAttachment> attachments;
 
   /// The size of the message.
   final int size;
@@ -102,7 +103,7 @@ class Message {
   /// When the message was seen
   final DateTime updatedAt;
 
-  factory Message._fromMap(Map<String, dynamic> json) => Message._(
+  factory GWMessage._fromMap(Map<String, dynamic> json) => GWMessage._(
         id: json["id"],
         accountId: json["accountId"].split('/accounts/')[1],
         msgid: json["msgid"],
@@ -122,7 +123,7 @@ class Message {
         html: List<String>.from(json["html"]),
         hasAttachments: json["hasAttachments"],
         attachments: json["attachments"]
-            .map<Attachment>((e) => attachmentFromJson(
+            .map<GWAttachment>((e) => attachmentFromJson(
                   e,
                   json["accountId"].split('/accounts/')[1],
                 ))
@@ -160,8 +161,8 @@ class Message {
         "updatedAt": updatedAt.toIso8601String(),
       };
 
-  /// Downloads the message as [MessageSource]
-  Future<MessageSource> download() async {
+  /// Downloads the message as [GWMessageSource]
+  Future<GWMessageSource> download() async {
     var r = await Requests.get<Map>('/sources/$id', auths[accountId]!.headers)
         as Map<String, dynamic>;
     return messageSourceFromJson(r);

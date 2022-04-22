@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import '../mailgw.dart';
 import '../requests.dart';
 
-Attachment attachmentFromJson(Map<String, dynamic> json, String accountId) =>
-    Attachment._fromJson(json, accountId);
+GWAttachment attachmentFromJson(Map<String, dynamic> json, String accountId) =>
+    GWAttachment._fromJson(json, accountId);
 
-class Attachment {
+class GWAttachment {
   /// The attachment id.
   final String id;
 
@@ -33,7 +33,7 @@ class Attachment {
   /// The attachment's account id.
   final String _accountId;
 
-  const Attachment._({
+  const GWAttachment._({
     required this.id,
     required this.name,
     required this.type,
@@ -45,8 +45,8 @@ class Attachment {
     required accountId,
   }) : _accountId = accountId;
 
-  factory Attachment._fromJson(Map<String, dynamic> json, String accountId) =>
-      Attachment._(
+  factory GWAttachment._fromJson(Map<String, dynamic> json, String accountId) =>
+      GWAttachment._(
         id: json['id'],
         name: json['filename'],
         type: json['contentType'],
@@ -58,6 +58,7 @@ class Attachment {
         accountId: accountId,
       );
 
+  /// Downloads the attachment
   Future<Uint8List> download() =>
       Requests.download(url, auths[_accountId]!.headers);
 

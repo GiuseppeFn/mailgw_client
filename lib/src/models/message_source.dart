@@ -1,7 +1,7 @@
-MessageSource messageSourceFromJson(Map<String, dynamic> json) =>
-    MessageSource._fromJson(json);
+GWMessageSource messageSourceFromJson(Map<String, dynamic> json) =>
+    GWMessageSource._fromJson(json);
 
-class MessageSource {
+class GWMessageSource {
   /// The id of the message.
   final String id;
 
@@ -11,16 +11,16 @@ class MessageSource {
   /// Message data
   final String data;
 
-  MessageSource._({
+  GWMessageSource._({
     required this.id,
     required this.url,
     required this.data,
   });
 
-  factory MessageSource._fromJson(
+  factory GWMessageSource._fromJson(
     Map<String, dynamic> json,
   ) =>
-      MessageSource._(
+      GWMessageSource._(
         id: json['id'],
         url: json['downloadUrl'],
         data: json['data'],
